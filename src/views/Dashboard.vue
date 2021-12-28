@@ -1,25 +1,31 @@
 <template>
   <el-row>
-      <el-col :span="4">
+    <el-col :xs="12" :sm="8" :md="4" :lg="4" :xl="4">
+      <div class="grid-content">
         <Sidebar></Sidebar>
-      </el-col>
-      <el-col :span="20">
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="16" :md="20" :lg="20" :xl="20">
+      <div class="grid-content">
         <TopNavbar></TopNavbar>
-      </el-col>
+        <AllPrivateWanTable></AllPrivateWanTable>
+      </div>
+    </el-col>
   </el-row>
 </template>
 
 <script>
 // @ is an alias to /src
 import Sidebar from "@/components/Sidebar.vue";
-import TopNavbar from '@/components/TopNavbar.vue';
+import TopNavbar from "@/components/TopNavbar.vue";
+import AllPrivateWanTable from "@/components/AllPrivateWanTable.vue";
 
 export default {
   name: "Dashboard",
   components: {
     Sidebar,
-    TopNavbar
-    
+    TopNavbar,
+    AllPrivateWanTable,
   },
 };
 </script>
