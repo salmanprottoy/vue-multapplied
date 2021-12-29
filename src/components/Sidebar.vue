@@ -12,13 +12,13 @@
       :collapse="isCollapse"
     >
       <el-menu-item index="1" >
-        <router-link to="/" style="text-decoration: none; color: inherit;">
+        <router-link to="/home" style="text-decoration: none; color: inherit;">
           <img src="https://ba-dev.turnium.com/media/navbar/login_eCGP2x0.png" style="height:25px; margin-right: 8px" />
             Enterprise Portal
         </router-link>
       </el-menu-item>
       <el-menu-item index="2 ">
-        <router-link to="/" style="text-decoration: none; color: inherit;">
+        <router-link to="/home" style="text-decoration: none; color: inherit;">
          <font-awesome-icon icon="home" style=" margin-right: 8px"></font-awesome-icon>
             Dashboard
         </router-link>
@@ -33,7 +33,7 @@
         <el-menu-item-group >
             <el-menu-item index="3-1"> Aggregators </el-menu-item>
             <el-menu-item index="3-2"> 
-              <router-link to="/home" style="text-decoration: none; color: inherit;">
+              <router-link to="/" style="text-decoration: none; color: inherit;">
                 Private WAN routers
               </router-link></el-menu-item>
             <el-menu-item index="3-3"> Bonders </el-menu-item>
