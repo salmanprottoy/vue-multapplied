@@ -1,6 +1,6 @@
 <template lang="">
-  <el-card class="box-card">
-    <h2>All private wan routers</h2>
+  <el-card class="box-card" v-loading="loading">
+    <h1>All private wan routers</h1>
     <el-table
       ref="filterTable"
       :data="tableData"
@@ -23,6 +23,7 @@
         order: 'desending',
       }"
       style="width: 100%"
+      
     >
       <el-table-column prop="id" label="ID" sortable width="180">
       </el-table-column>
@@ -43,17 +44,21 @@
       </el-table-column>
       <el-table-column prop="status" label="Status" sortable width="180">
       </el-table-column>
-      <el-table-column prop="id" label="Actions" width="180">
-        <el-button
-          type="primary"
-          plain
-          circle
-          icon="el-icon-info"
-          @click="getId(id)"
-        ></el-button>
+      <el-table-column label="Actions" width="180">
+        <template slot-scope="scope">
+          <router-link :to="{ name: 'Details', params: { id: scope.row.id }}">
+            <el-button
+            type="primary"
+            plain
+            circle
+            icon="el-icon-info"
+            @click="getId(scope.row.id)"
+          ></el-button>
+          </router-link>
+         </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="1000" style="width: 100%">
+    <el-pagination layout="prev, pager, next" :total="100" style="width: 100%">
     </el-pagination>
   </el-card>
 </template>
@@ -63,6 +68,7 @@ export default {
   data() {
     return {
       tableData: [],
+      loading: true
     };
   },
   created() {
@@ -78,6 +84,7 @@ export default {
       })
       .then((response) => {
         this.tableData = response.data;
+        this.loading= false;
         console.log(this.tableData);
       })
       .catch((error) => {

@@ -1,11 +1,11 @@
 <template>
   <el-row>
-    <el-col :xs="12" :sm="8" :md="4" :lg="4" :xl="4">
+    <el-col :xs="0" :sm="8" :md="5" :lg="4" :xl="4">
       <div class="grid-content">
         <Sidebar></Sidebar>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="16" :md="20" :lg="20" :xl="20">
+    <el-col :xs="24" :sm="16" :md="19" :lg="20" :xl="20">
       <div class="grid-content">
         <TopNavbar></TopNavbar>
         <AllPrivateWanTable></AllPrivateWanTable>

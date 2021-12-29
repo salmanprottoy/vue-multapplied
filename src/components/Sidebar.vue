@@ -12,43 +12,48 @@
       :collapse="isCollapse"
     >
       <el-menu-item index="1" >
-        <img src="https://ba-dev.turnium.com/media/navbar/login_eCGP2x0.png" />
-        <span slot="title">Enterprise Portal</span>
+        <router-link to="/" style="text-decoration: none; color: inherit;">
+          <img src="https://ba-dev.turnium.com/media/navbar/login_eCGP2x0.png" style="height:25px; margin-right: 8px" />
+            Enterprise Portal
+        </router-link>
       </el-menu-item>
-      <el-menu-item index="2 " >
-         <font-awesome-icon icon="home"></font-awesome-icon>
-        <span slot="title"> 
-           Dashboard
-        </span>
+      <el-menu-item index="2 ">
+        <router-link to="/" style="text-decoration: none; color: inherit;">
+         <font-awesome-icon icon="home" style=" margin-right: 8px"></font-awesome-icon>
+            Dashboard
+        </router-link>
       </el-menu-item>
       <el-submenu index="3">
           <template1 slot="title">
-                <font-awesome-icon icon="server"></font-awesome-icon>
+                <font-awesome-icon icon="server" style="margin-right: 8px"></font-awesome-icon>
                 <span slot="title">
                     Hosts
                 </span>
             </template1>
         <el-menu-item-group >
             <el-menu-item index="3-1"> Aggregators </el-menu-item>
-            <el-menu-item index="3-2"> Private WAN routers </el-menu-item>
+            <el-menu-item index="3-2"> 
+              <router-link to="/home" style="text-decoration: none; color: inherit;">
+                Private WAN routers
+              </router-link></el-menu-item>
             <el-menu-item index="3-3"> Bonders </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="4">
-        <font-awesome-icon icon="project-diagram"></font-awesome-icon>
+        <font-awesome-icon icon="project-diagram" style="margin-right: 8px"></font-awesome-icon>
         <span slot="title">
             Bonds
         </span>
       </el-menu-item>
       <el-menu-item index="5">
-         <font-awesome-icon icon="file-alt"></font-awesome-icon>
+         <font-awesome-icon icon="file-alt" style="margin-right: 8px"></font-awesome-icon>
         <span slot="title">
             Spaces
         </span>
       </el-menu-item>
         <el-submenu index="6" >
             <template slot="title">
-                <font-awesome-icon icon="file-contract"></font-awesome-icon>
+                <font-awesome-icon icon="file-contract" style=" margin-right: 8px"></font-awesome-icon>
                 <span slot="title">
                     Policies
                 </span>
