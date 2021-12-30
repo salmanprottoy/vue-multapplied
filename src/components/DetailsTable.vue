@@ -1,47 +1,52 @@
 <template lang="">
-  <el-container>
-    <el-card class="box-card" v-loading="loading">
-      <h2>
-        Private WAN router ID : <span> {{ tableData.id }}</span>
-      </h2>
-      <h2>
-        Name :
-        <span>
-          {{ tableData.name }}
-        </span>
-      </h2>
-      <h2>
-        IP :
-        <span>
-          {{ tableData.ip }}
-        </span>
-      </h2>
-      <h2>
-        IPv6 :
-        <span>
-          {{ tableData.ip6 }}
-        </span>
-      </h2>
-      <h2>
-        Routing group :
-        <span>
-          {{ tableData.routing_group.display_name }}
-        </span>
-      </h2>
-      <h2>
-        Management VPN IPV4 :
-        <span>
-          {{ tableData.openvpn_ip }}
-        </span>
-      </h2>
-      <h2>
-        Management VPN IPV6 :
-        <span>
-          {{ tableData.openvpn_ipv6 }}
-        </span>
-      </h2>
-    </el-card>
-  </el-container>
+  <el-card class="box-card" v-loading="loading">
+    <div slot="header" class="clearfix">
+      <router-link to="/" style="text-decoration: none; color: inherit">
+        <el-button type="primary" plain>Back</el-button>
+      </router-link>
+      <span style="padding: 0 2%; font-size: 25px">{{ tableData.name }}</span>
+    </div>
+
+    <h2>
+      Private WAN router ID : <span> {{ tableData.id }}</span>
+    </h2>
+    <h2>
+      Name :
+      <span>
+        {{ tableData.name }}
+      </span>
+    </h2>
+    <h2>
+      IP :
+      <span>
+        {{ tableData.ip }}
+      </span>
+    </h2>
+    <h2>
+      IPv6 :
+      <span>
+        {{ tableData.ip6 }}
+      </span>
+    </h2>
+    <h2>
+      Routing group :
+      <span>
+        {{ tableData.routing_group.display_name }}
+      </span>
+    </h2>
+    <h2>
+      Management VPN IPV4 :
+      <span>
+        {{ tableData.openvpn_ip }}
+      </span>
+    </h2>
+    <h2>
+      Management VPN IPV6 :
+      <span>
+        {{ tableData.openvpn_ipv6 }}
+      </span>
+    </h2>
+  </el-card>
 </template>
 <script>
 import axios from "axios";
