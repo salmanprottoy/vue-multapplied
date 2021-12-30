@@ -25,24 +25,24 @@
       style="width: 100%"
       
     >
-      <el-table-column prop="id" label="ID" sortable width="180">
+      <el-table-column prop="id" label="ID" sortable width="100">
       </el-table-column>
-      <el-table-column prop="name" label="Name" sortable width="180">
+      <el-table-column prop="name" label="Name" sortable width="120">
       </el-table-column>
       <el-table-column
         prop="routing_group.display_name"
         label="Routing group"
         sortable
-        width="180"
+        width="200"
       >
       </el-table-column>
-      <el-table-column prop="ip" label="IP" sortable width="180">
+      <el-table-column prop="ip" label="IP" sortable width="120">
       </el-table-column>
-      <el-table-column prop="ipv6" label="IPv6" sortable width="180">
+      <el-table-column prop="ipv6" label="IPv6" sortable width="200">
       </el-table-column>
-      <el-table-column prop="version" label="Version" sortable width="180">
+      <el-table-column prop="version" label="Version" sortable width="100">
       </el-table-column>
-      <el-table-column prop="status" label="Status" sortable width="180">
+      <el-table-column prop="status" label="Status" sortable width="100">
       </el-table-column>
       <el-table-column label="Actions" width="180">
         <template slot-scope="scope">
@@ -58,7 +58,7 @@
          </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="100" style="width: 100%">
+    <el-pagination layout="prev, pager, next" :total="this.tableData.length" style=" float:right">
     </el-pagination>
   </el-card>
 </template>
