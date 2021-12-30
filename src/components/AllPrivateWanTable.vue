@@ -1,6 +1,6 @@
 <template lang="">
   <el-card class="box-card" v-loading="loading">
-    <h1>All private wan routers</h1>
+    <h1 style="font-size:20px">All private wan routers</h1>
     <el-table
       ref="filterTable"
       :data="tableData"
