@@ -41,7 +41,7 @@
       <h2>
         IPv6 :
         <span>
-          {{ tableData.ip6 }}
+          {{ tableData.ipv6 }}
         </span>
       </h2>
       <h2>
@@ -60,6 +60,12 @@
         Management VPN IPV6 :
         <span>
           {{ tableData.openvpn_ipv6 }}
+        </span>
+      </h2>
+      <h2>
+        Management VPN Server :
+        <span>
+          {{ tableData.openvpn_server }}
         </span>
       </h2>
     </div>
