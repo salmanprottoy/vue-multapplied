@@ -36,7 +36,7 @@
         width="200"
       >
       </el-table-column>
-      <el-table-column prop="ip" label="IP" sortable width="120">
+      <el-table-column prop="ip" label="IP" sortable width="150">
       </el-table-column>
       <el-table-column prop="ipv6" label="IPv6" sortable width="200">
       </el-table-column>
