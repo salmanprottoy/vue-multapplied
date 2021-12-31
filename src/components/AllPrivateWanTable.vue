@@ -1,5 +1,5 @@
 <template lang="">
-  <el-card class="box-card" v-loading="loading">
+  <el-card class="box-card" >
     <div style="display: flex; justify-content: space-between"> 
       <div>
         <h1 style="font-size:20px">All private wan routers</h1>
@@ -15,11 +15,11 @@
     </div>
     
     <el-table
-      ref="filterTable"
-      :data="tableData"
+      :data="tableData.results"
        @sort-change="handleSortChange"
       style="width: 100%"
-      
+      border
+      v-loading="loading"
     >
       <el-table-column prop="id" label="ID" sortable="custom"  width="100">
       </el-table-column>
@@ -39,6 +39,14 @@
       <el-table-column prop="version" label="Version" sortable="custom"  width="100">
       </el-table-column>
       <el-table-column prop="status" label="Status" sortable="custom"  width="100">
+        <template slot-scope="scope">
+          <span v-if="scope.row.status === 'up'" style="color:green; font-size:18px">
+            <i class="el-icon-open"></i>
+          </span>
+          <div v-if="scope.row.status === 'unknown'" style="color:red; font-size:20px" >
+            <i class="el-icon-turn-off"></i>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column label="Actions" width="180">
         <template slot-scope="scope">
@@ -54,7 +62,7 @@
          </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="this.tableData.length" style=" float:right">
+    <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :total="this.tableData.count" style=" float:right">
     </el-pagination>
   </el-card>
 </template>
@@ -65,11 +73,12 @@ export default {
     return {
       tableData: [],
       loading: true,
-      input: ""
+      input: "",
+      page:1,
     };
   },
   created() {
-    const url = "/api/v4/private_wan_routers/";
+    const url = "/api/v4/private_wan_routers/?page_size=10";
     const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
     axios
       .get(url, {
@@ -92,8 +101,27 @@ export default {
     getId(id) {
       console.log(id);
     },
+    handleCurrentChange(val){
+      const url = `/api/v4/private_wan_routers/?page=${val}&page_size=10&search=${this.input}`;
+      const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Basic ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          this.loading= true;
+          this.tableData = response.data;
+          this.loading= false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     searchData(){
-      const url = `/api/v4/private_wan_routers/?search=${this.input}`;
+      const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}`;
       const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
       axios
         .get(url, {
@@ -113,7 +141,7 @@ export default {
     },
     handleSortChange( prop ){
       if(prop.order =="ascending"){
-        const url = `/api/v4/private_wan_routers/?ordering=${prop.prop}`;
+        const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}&ordering=${prop.prop}`;
         const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
         axios
           .get(url, {
@@ -132,7 +160,7 @@ export default {
           });
       }
       else{
-        const url = `/api/v4/private_wan_routers/?ordering=-${prop.prop}`;
+        const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}&ordering=-${prop.prop}`;
         const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
         axios
           .get(url, {
