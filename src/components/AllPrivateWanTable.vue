@@ -13,12 +13,12 @@
         </el-input>
       </div>
     </div>
-    
-    <el-table
+    <div style="padding: 10px; margin: 10px">
+      <el-table
       :data="tableData.results"
        @sort-change="handleSortChange"
       style="width: 100%"
-      border
+      stripe
       v-loading="loading"
     >
       <el-table-column prop="id" label="ID" sortable="custom"  width="100">
@@ -44,7 +44,15 @@
           </span>
         </template1>
       </el-table-column>
-      <el-table-column prop="version" label="Version" sortable="custom"  width="120">
+      <el-table-column prop="version" label="Version" sortable="custom"  width="150">
+        <template2 slot-scope="scope">
+          <span v-if="scope.row.version === ''" >
+            Never online
+          </span>
+          <span v-else >
+            {{scope.row.version}}
+          </span>
+        </template2>
       </el-table-column>
       <el-table-column prop="status" label="Status" sortable="custom"  width="120">
         <template slot-scope="scope">
@@ -72,6 +80,8 @@
     </el-table>
     <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :total="this.tableData.count" style=" float:right">
     </el-pagination>
+    </div>
+    
   </el-card>
 </template>
 <script>
