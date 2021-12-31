@@ -35,6 +35,14 @@
       <el-table-column prop="ip" label="IP" sortable="custom"  width="150">
       </el-table-column>
       <el-table-column prop="ipv6" label="IPv6" sortable="custom"  width="200">
+        <template1 slot-scope="scope">
+          <span v-if="scope.row.ipv6 === null" >
+            <i class="el-icon-minus"></i>
+          </span>
+          <span v-else >
+            {{scope.row.ipv6}}
+          </span>
+        </template1>
       </el-table-column>
       <el-table-column prop="version" label="Version" sortable="custom"  width="120">
       </el-table-column>
