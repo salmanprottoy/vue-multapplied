@@ -6,10 +6,10 @@
       </div>
       <div>
         <el-input
-          placeholder="Type something"
           prefix-icon="el-icon-search"
           v-model="input"
-          @input="searchData">
+          debounce="500"
+         >
         </el-input>
       </div>
     </div>
@@ -23,7 +23,7 @@
     >
       <el-table-column prop="id" label="ID" sortable="custom"  width="100">
       </el-table-column>
-      <el-table-column prop="name" label="Name" sortable width="120">
+      <el-table-column prop="name" label="Name" sortable width="150">
       </el-table-column>
       <el-table-column
         prop="routing_group.display_name"
@@ -36,9 +36,9 @@
       </el-table-column>
       <el-table-column prop="ipv6" label="IPv6" sortable="custom"  width="200">
       </el-table-column>
-      <el-table-column prop="version" label="Version" sortable="custom"  width="100">
+      <el-table-column prop="version" label="Version" sortable="custom"  width="120">
       </el-table-column>
-      <el-table-column prop="status" label="Status" sortable="custom"  width="100">
+      <el-table-column prop="status" label="Status" sortable="custom"  width="120">
         <template slot-scope="scope">
           <span v-if="scope.row.status === 'up'" style="color:green; font-size:18px">
             <i class="el-icon-open"></i>
@@ -94,6 +94,27 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+  },
+  watch: {
+    input: function(value){
+      this.loading= true;
+      const url = `/api/v4/private_wan_routers/?page_size=10&search=${value}`;
+      const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Basic ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          this.tableData = response.data;
+          this.loading= false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
   methods: {
     getId(id) {
