@@ -88,10 +88,8 @@ export default {
         },
       })
       .then((response) => {
-        this.loading= true;
         this.tableData = response.data;
-        this.loading= false;
-        
+        this.loading= false;       
       })
       .catch((error) => {
         console.log(error);
@@ -102,6 +100,7 @@ export default {
       console.log(id);
     },
     handleCurrentChange(val){
+      this.loading= true;
       const url = `/api/v4/private_wan_routers/?page=${val}&page_size=10&search=${this.input}`;
       const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
       axios
@@ -112,7 +111,6 @@ export default {
           },
         })
         .then((response) => {
-          this.loading= true;
           this.tableData = response.data;
           this.loading= false;
         })
@@ -121,6 +119,7 @@ export default {
         });
     },
     searchData(){
+      this.loading= true;
       const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}`;
       const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
       axios
@@ -131,7 +130,6 @@ export default {
           },
         })
         .then((response) => {
-          this.loading= true;
           this.tableData = response.data;
           this.loading= false;
         })
@@ -140,6 +138,7 @@ export default {
         });
     },
     handleSortChange( prop ){
+      this.loading= true;
       if(prop.order =="ascending"){
         const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}&ordering=${prop.prop}`;
         const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
@@ -151,7 +150,6 @@ export default {
             },
           })
           .then((response) => {
-            this.loading= true;
             this.tableData = response.data;
             this.loading= false;
           })
@@ -170,7 +168,6 @@ export default {
             },
           })
           .then((response) => {
-            this.loading= true;
             this.tableData = response.data;
             this.loading= false;
           })
