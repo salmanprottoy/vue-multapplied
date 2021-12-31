@@ -7,7 +7,10 @@
             <el-row :gutter="10">
               <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                 <div class="grid-content" style="font-size: 25px">
-                  <i class="el-icon-s-fold hamburger"></i>
+                  <i
+                    class="el-icon-s-fold hamburger"
+                    @click="drawer = true"
+                  ></i>
                 </div>
               </el-col>
               <el-col :xs="0" :sm="20" :md="20" :lg="20" :xl="20">
@@ -75,12 +78,28 @@
         </el-col>
       </el-row>
     </el-header>
+    <div v-if="isMobile">
+      <el-drawer
+        title="Mobile"
+        size="45%"
+        :direction="direction"
+        :visible.sync="drawer"
+      >
+        <span></span>
+      </el-drawer>
+    </div>
   </el-container>
 </template>
 <script>
 export default {
   data() {
     return {
+      drawer: false,
+      direction: "ltr",
+      isMobile:
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        ),
       options: [
         {
           value: "guide",
