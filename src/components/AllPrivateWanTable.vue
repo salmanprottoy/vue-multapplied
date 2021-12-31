@@ -23,14 +23,30 @@
     >
       <el-table-column prop="id" label="ID" sortable="custom"  width="100">
       </el-table-column>
-      <el-table-column prop="name" label="Name" sortable width="150">
+      <el-table-column prop="name" label="Name" sortable width="200">
+        <template1 slot-scope="scope">
+          <span  >
+            {{scope.row.name}}
+          </span>
+          <span v-if="scope.row.debug===true" style="background-color: #75CAEB; color:white; padding: 3px; border-radius:8%; font-size: 10px" >
+              debug
+          </span>
+        </template1>
       </el-table-column>
       <el-table-column
         prop="routing_group.display_name"
         label="Routing group"
         sortable
-        width="200"
+        width="280"
       >
+      <template1 slot-scope="scope">
+          <span  >
+            {{scope.row.routing_group.display_name}}
+          </span>
+          <span v-if="scope.row.is_primary_router===true" style="background-color: #75CAEB; color:white; padding: 3px; border-radius:8%; font-size: 10px" >
+              Primary router
+          </span>
+        </template1>
       </el-table-column>
       <el-table-column prop="ip" label="IP" sortable="custom"  width="150">
       </el-table-column>
