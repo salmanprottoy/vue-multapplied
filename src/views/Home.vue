@@ -8,7 +8,6 @@
     <el-col :xs="24" :sm="16" :md="19" :lg="20" :xl="20">
       <div class="grid-content">
         <TopNavbar></TopNavbar>
-        <AllPrivateWanTable></AllPrivateWanTable>
       </div>
     </el-col>
   </el-row>

@@ -24,7 +24,8 @@
       v-if="tableData"
     >
       <h2>
-        Private WAN router ID : <span> {{ tableData.id }} </span>
+        Private WAN router ID :
+        <span> {{ tableData.id }} </span>
       </h2>
       <h2>
         Name :
@@ -46,7 +47,7 @@
       </h2>
       <h2>
         Routing group :
-        <span>
+        <span v-if="tableData.routing_group">
           {{ tableData.routing_group.display_name }}
         </span>
       </h2>
@@ -99,7 +100,6 @@ export default {
       .then((response) => {
         this.tableData = response.data;
         this.loading = false;
-        console.log(this.tableData);
       })
       .catch((error) => {
         if (error.response.status == "404") {
