@@ -104,32 +104,17 @@
         </el-table-column>
         <el-table-column prop="status" label="Status" width="120">
           <div slot-scope="scope">
-            <span
-              v-if="scope.row.status === 'up'"
-              style="color: green; font-size: 18px"
-            >
-              <i class="el-icon-open"></i>
+            <span v-if="scope.row.status === 'up'" style="color: #67c23a">
+              <font-awesome-icon icon="circle"></font-awesome-icon>
             </span>
-            <div
-              v-if="scope.row.status === 'unknown'"
-              style="color: red; font-size: 20px"
-            >
-              <i class="el-icon-turn-off"></i>
+            <div v-if="scope.row.status === 'unknown'" style="color: #ccc">
+              <font-awesome-icon icon="circle"></font-awesome-icon>
             </div>
           </div>
         </el-table-column>
         <el-table-column label="Actions" width="180">
-          <div slot-scope="scope">
-            <router-link
-              :to="{ name: 'Details', params: { id: scope.row.id } }"
-            >
-              <el-button
-                type="primary"
-                plain
-                circle
-                icon="el-icon-info"
-              ></el-button>
-            </router-link>
+          <div>
+            <el-button plain icon="el-icon-edit" size="small"></el-button>
           </div>
         </el-table-column>
       </el-table>

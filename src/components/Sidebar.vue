@@ -100,4 +100,7 @@ export default {
 .sidebar {
   height: 100vh;
 }
+.el-submenu i {
+  color: #ffff !important;
+}
 </style>
