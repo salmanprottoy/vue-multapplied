@@ -125,7 +125,7 @@
       </el-table>
       <el-pagination
         background
-        layout="prev, pager, next"
+        layout="prev, pager, next, jumper"
         @current-change="handleCurrentChange"
         :total="this.tableData.count"
         style="float: right"
