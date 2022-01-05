@@ -7,7 +7,7 @@
       <div>
         <el-input
           prefix-icon="el-icon-search"
-          color="black"
+          color="#333333"
           v-model="input"
           debounce="500"
         >
@@ -16,13 +16,13 @@
     </div>
     <div style="padding: 10px; margin: 10px">
       <el-table
+        :header-cell-style="{ color: '#333333' }"
         :data="tableData.results"
         @sort-change="handleSortChange"
         style="width: 100%"
-        stripe
         v-loading="loading"
       >
-        <el-table-column prop="id" label="ID" sortable="custom" width="150">
+        <el-table-column prop="id" label="ID" sortable="custom" width="120">
           <div slot-scope="scope">
             <span>
               <router-link
@@ -107,7 +107,7 @@
             </span>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="Status" width="150">
+        <el-table-column prop="status" label="Status" width="100">
           <div slot-scope="scope">
             <span v-if="scope.row.status === 'up'" style="color: #67c23a">
               <font-awesome-icon icon="circle"></font-awesome-icon>
@@ -117,7 +117,7 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column label="Actions" width="180">
+        <el-table-column label="Actions" width="150">
           <div>
             <el-button plain icon="el-icon-edit" size="small"></el-button>
           </div>
@@ -268,8 +268,12 @@ export default {
 .el-input__icon {
   color: black;
 }
-.el-table__fixed,
-.el-table__fixed-right {
-  box-shadow: none;
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #ececec !important;
+}
+
+.el-table__row:nth-child(2n-1) {
+  background: #f0f7ff;
 }
 </style>

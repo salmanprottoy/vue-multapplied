@@ -71,7 +71,7 @@
       </div>
       <el-menu-item-group>
         <el-menu-item index="6-1"> Routing groups </el-menu-item>
-        <el-menu-item index="6-2"> Quality of service profiles </el-menu-item>
+        <el-menu-item index="6-2"> Quality of service </el-menu-item>
         <el-menu-item index="6-3"> Classification profiles </el-menu-item>
         <el-menu-item index="6-4"> Flow collectors </el-menu-item>
         <el-menu-item index="6-5"> Mobile providers </el-menu-item>
@@ -99,6 +99,7 @@ export default {
 <style lang="scss">
 .sidebar {
   height: 100vh;
+  width: auto;
 }
 .el-submenu i {
   color: #ffff !important;

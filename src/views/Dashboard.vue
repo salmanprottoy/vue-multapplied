@@ -10,7 +10,7 @@
         <TopNavbar></TopNavbar>
         <div class="grid-content-2" style="margin: 25px">
           <div class="" style="display: flex; justify-content: space-between">
-            <div style="color: black"><h2>Private Wan Router</h2></div>
+            <div style="color: #333333"><h3>Private Wan Router</h3></div>
             <div>
               <el-button plain icon="el-icon-circle-plus-outline">
                 Add router</el-button

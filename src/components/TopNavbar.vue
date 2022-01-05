@@ -15,8 +15,8 @@
                 </div>
               </el-col>
               <el-col :xs="0" :sm="21" :md="21" :lg="21" :xl="21">
-                <div class="grid-content" style="margin-left:5px" >
-                  <el-breadcrumb separator="/" style="font-size: 20px" >
+                <div class="grid-content" style="margin-left:5px;" >
+                  <el-breadcrumb separator="/" >
                   <el-breadcrumb-item :to="{ path: '/home' }"> Enterprise Portal </el-breadcrumb-item>
                   <el-breadcrumb-item :to="{ path: '/' }"> Private WAN Routers </el-breadcrumb-item>
                   <el-breadcrumb-item v-if="$route.params.id" > {{ $route.params.id }} </el-breadcrumb-item>
