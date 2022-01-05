@@ -2,10 +2,15 @@
   <el-card class="box-card">
     <div style="display: flex; justify-content: space-between">
       <div>
-        <h1 style="font-size: 20px">All private wan routers</h1>
+        <span style="font-size: 20px">All private wan routers</span>
       </div>
       <div>
-        <el-input prefix-icon="el-icon-search" v-model="input" debounce="500">
+        <el-input
+          prefix-icon="el-icon-search"
+          color="black"
+          v-model="input"
+          debounce="500"
+        >
         </el-input>
       </div>
     </div>
@@ -17,7 +22,7 @@
         stripe
         v-loading="loading"
       >
-        <el-table-column prop="id" label="ID" sortable="custom" width="100">
+        <el-table-column prop="id" label="ID" sortable="custom" width="150">
           <div slot-scope="scope">
             <span>
               <router-link
@@ -102,7 +107,7 @@
             </span>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="Status" width="120">
+        <el-table-column prop="status" label="Status" width="150">
           <div slot-scope="scope">
             <span v-if="scope.row.status === 'up'" style="color: #67c23a">
               <font-awesome-icon icon="circle"></font-awesome-icon>
@@ -259,4 +264,12 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style lang="scss">
+.el-input__icon {
+  color: black;
+}
+.el-table__fixed,
+.el-table__fixed-right {
+  box-shadow: none;
+}
+</style>

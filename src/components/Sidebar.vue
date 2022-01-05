@@ -20,7 +20,7 @@
         Enterprise Portal
       </router-link>
     </el-menu-item>
-    <el-menu-item index="2 ">
+    <el-menu-item index="2">
       <router-link to="/home" style="text-decoration: none; color: inherit">
         <font-awesome-icon
           icon="home"

@@ -8,7 +8,19 @@
     <el-col :xs="24" :sm="16" :md="19" :lg="20" :xl="20">
       <div class="grid-content">
         <TopNavbar></TopNavbar>
-        <AllPrivateWanTable></AllPrivateWanTable>
+        <div class="grid-content-2" style="margin: 25px">
+          <div class="" style="display: flex; justify-content: space-between">
+            <div style="color: black"><h2>Private Wan Router</h2></div>
+            <div>
+              <el-button plain icon="el-icon-circle-plus-outline">
+                Add router</el-button
+              >
+            </div>
+          </div>
+          <div style="margin-top: 15px">
+            <AllPrivateWanTable></AllPrivateWanTable>
+          </div>
+        </div>
       </div>
     </el-col>
   </el-row>

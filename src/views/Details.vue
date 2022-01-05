@@ -8,7 +8,9 @@
     <el-col :xs="24" :sm="16" :md="19" :lg="20" :xl="20">
       <div class="grid-content">
         <TopNavbar></TopNavbar>
-        <DetailsTable></DetailsTable>
+        <div class="grid-content-2" style="margin: 25px">
+          <DetailsTable></DetailsTable>
+        </div>
       </div>
     </el-col>
   </el-row>

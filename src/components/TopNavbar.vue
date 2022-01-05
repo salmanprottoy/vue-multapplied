@@ -1,26 +1,26 @@
 <template lang="">
-  <el-container>
-    <el-header>
+  <el-container >
+    <el-header shadow>
       <el-row :gutter="10">
         <el-col :xs="6" :sm="10" :md="10" :lg="12" :xl="12">
           <div class="grid-content">
             <el-row :gutter="10">
-              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-                <div class="grid-content" style="font-size: 25px">
+              <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="3">
+                <div class="grid-content">
                   <i
-                    class="el-icon-s-fold hamburger"
+                    class="el-icon-s-fold hamburger" 
                     @click="drawer = true"
+                    style="font-size: 25px"
                   ></i>
                 </div>
               </el-col>
-              <el-col :xs="0" :sm="20" :md="20" :lg="20" :xl="20">
-                <div class="grid-content-2">
-                  <h1>
-                    Enterprise Portal / Private WAN Routers
-                    <span v-if="$route.params.id">
-                      {{ "/ " + $route.params.id }}</span
-                    >
-                  </h1>
+              <el-col :xs="0" :sm="21" :md="21" :lg="21" :xl="21">
+                <div class="grid-content" style="margin-left:5px" >
+                  <el-breadcrumb separator="/" style="font-size: 20px" >
+                  <el-breadcrumb-item :to="{ path: '/home' }"> Enterprise Portal </el-breadcrumb-item>
+                  <el-breadcrumb-item :to="{ path: '/' }"> Private WAN Routers </el-breadcrumb-item>
+                  <el-breadcrumb-item v-if="$route.params.id" > {{ $route.params.id }} </el-breadcrumb-item>
+                  </el-breadcrumb>
                 </div>
               </el-col>
             </el-row>
@@ -78,6 +78,7 @@
         </el-col>
       </el-row>
     </el-header>
+
     <div v-if="isMobile">
       <el-drawer
         size="60%"
@@ -144,11 +145,11 @@
                 </span>
             </template>
             <el-menu-item-group >
-                <el-menu-item index="6-1">  Routing groups </el-menu-item>
-                <el-menu-item index="6-2">  Quality of service profiles </el-menu-item>
-                <el-menu-item index="6-3">  Classification profiles </el-menu-item>
-                <el-menu-item index="6-4">  Flow collectors </el-menu-item>
-                <el-menu-item index="6-5">  Mobile providers </el-menu-item>
+                <el-menu-item index="6-1"> Routing groups </el-menu-item>
+                <el-menu-item index="6-2"> Quality of service profiles </el-menu-item>
+                <el-menu-item index="6-3"> Classification profiles </el-menu-item>
+                <el-menu-item index="6-4"> Flow collectors </el-menu-item>
+                <el-menu-item index="6-5"> Mobile providers </el-menu-item>
             </el-menu-item-group>
         </el-submenu>
     </el-menu>
@@ -189,8 +190,7 @@ export default {
   color: black;
 }
 .el-container {
-  margin-top: 10px;
-  padding: 5px;
+  padding: 25px 5px 0px 5px;
   background-color: white;
   border: 1px black;
 }

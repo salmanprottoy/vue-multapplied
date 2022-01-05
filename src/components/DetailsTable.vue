@@ -23,52 +23,52 @@
       "
       v-if="tableData"
     >
-      <h2>
+      <p>
         Private WAN router ID :
         <span> {{ tableData.id }} </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         Name :
         <span>
           {{ tableData.name }}
         </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         IP :
         <span>
           {{ tableData.ip }}
         </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         IPv6 :
         <span>
           {{ tableData.ipv6 }}
         </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         Routing group :
         <span v-if="tableData.routing_group">
           {{ tableData.routing_group.display_name }}
         </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         Management VPN IPV4 :
         <span>
           {{ tableData.openvpn_ip }}
         </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         Management VPN IPV6 :
         <span>
           {{ tableData.openvpn_ipv6 }}
         </span>
-      </h2>
-      <h2>
+      </p>
+      <p>
         Management VPN Server :
         <span>
           {{ tableData.openvpn_server }}
         </span>
-      </h2>
+      </p>
     </div>
     <div v-else>
       <el-empty> No data found! </el-empty>
