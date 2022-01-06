@@ -79,7 +79,7 @@
       </el-row>
     </el-header>
 
-    <div v-if="isMobile">
+    <div v-if="isMobile" style="background-color: rgb(84, 146, 239);">
       <el-drawer
         size="60%"
         :direction="direction"
@@ -197,5 +197,11 @@ export default {
 .grid-content-2 {
   font-size: 18px;
   color: #97a8be;
+}
+.el-drawer{
+  background-color: #3f85ed !important;
+}
+.el-drawer__close-btn{
+  color:white !important;
 }
 </style>

@@ -1,12 +1,14 @@
 <template lang="">
   <el-card class="box-card">
-    <div style="display: flex; justify-content: space-between">
+    <div
+      style="display: flex; align-items: center; justify-content: space-between"
+    >
       <div>
         <span style="font-size: 20px">All private wan routers</span>
       </div>
       <div>
         <div style="display: flex; justify-content: space-between">
-          <div>
+          <div style="margin-right: 3px">
             <el-input
               prefix-icon="el-icon-search"
               color="#333333"
@@ -15,7 +17,7 @@
             >
             </el-input>
           </div>
-          <div>
+          <div style="margin-left: 3px">
             <el-cascader
               style="color: black"
               placeholder="Table Options"
@@ -34,7 +36,13 @@
         style="width: auto"
         v-loading="loading"
       >
-        <el-table-column prop="id" label="ID" sortable="custom" width="auto">
+        <el-table-column
+          prop="id"
+          label="ID"
+          sortable="custom"
+          min-width="80"
+          width="auto"
+        >
           <div slot-scope="scope">
             <span>
               <router-link
@@ -80,25 +88,34 @@
           prop="routing_group.display_name"
           label="Routing group"
           sortable
-          min-width="160"
+          min-width="180"
           width="auto"
         >
           <div slot-scope="scope">
             <span>
               {{ scope.row.routing_group.display_name }}
             </span>
-            <span
-              v-if="scope.row.is_primary_router === true"
-              style="
-                background-color: #75caeb;
-                color: white;
-                padding: 3px;
-                border-radius: 8%;
-                font-size: 10px;
-              "
-            >
-              Primary router
-            </span>
+            <el-tooltip class="item" effect="light" placement="top-start">
+              <div slot="content">
+                Last updated:
+                {{ scope.row.is_primary_router_updated }}
+              </div>
+              <span
+                v-if="
+                  scope.row.is_primary_router === true ||
+                  scope.row.is_primary_router_updated !== null
+                "
+                style="
+                  background-color: #75caeb;
+                  color: white;
+                  padding: 3px;
+                  border-radius: 8%;
+                  font-size: 10px;
+                "
+              >
+                Primary router
+              </span>
+            </el-tooltip>
           </div>
         </el-table-column>
         <el-table-column
@@ -113,6 +130,7 @@
           prop="ipv6"
           label="IPv6"
           sortable="custom"
+          min-width="120"
           width="auto"
         >
           <div slot-scope="scope">
@@ -140,15 +158,28 @@
         </el-table-column>
         <el-table-column prop="status" label="Status" width="auto">
           <div slot-scope="scope">
-            <span v-if="scope.row.status === 'up'" style="color: #67c23a">
-              <font-awesome-icon icon="circle"></font-awesome-icon>
-            </span>
-            <span v-if="scope.row.status === 'down'" style="color: #ff4949">
-              <font-awesome-icon icon="circle"></font-awesome-icon>
-            </span>
-            <div v-if="scope.row.status === 'unknown'" style="color: #ccc">
-              <font-awesome-icon icon="circle"></font-awesome-icon>
-            </div>
+            <el-tooltip class="item" effect="dark" placement="top">
+              <div slot="content">
+                Management Vpn:
+                <br />
+                <br />
+                {{ scope.row.openvpn_ipv6 }}
+                <br />
+                <br />
+                {{ scope.row.openvpn_ip }}
+                <br />
+                <br />
+              </div>
+              <span v-if="scope.row.status === 'up'" style="color: #67c23a">
+                <font-awesome-icon icon="circle"></font-awesome-icon>
+              </span>
+              <span v-if="scope.row.status === 'down'" style="color: #ff4949">
+                <font-awesome-icon icon="circle"></font-awesome-icon>
+              </span>
+              <span v-if="scope.row.status === 'unknown'" style="color: #ccc">
+                <font-awesome-icon icon="circle"></font-awesome-icon>
+              </span>
+            </el-tooltip>
           </div>
         </el-table-column>
         <el-table-column label="Actions" width="auto">

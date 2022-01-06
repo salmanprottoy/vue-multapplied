@@ -13,16 +13,23 @@
       </router-link>
       <span style="padding: 0 5%; font-size: 30px">{{ tableData.name }} </span>
     </div>
-    <div
-      class="text item"
-      style="
-        font-size: 16px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      "
-      v-if="tableData"
-    >
+    <div class="text item" style="font-size: 16px" v-if="tableData">
+      <p>
+        Overall status :
+        <span v-if="tableData.status === 'up'" style="color: #67c23a">
+          <font-awesome-icon icon="circle"></font-awesome-icon>
+        </span>
+        <span v-if="tableData.status === 'down'" style="color: #ff4949">
+          <font-awesome-icon icon="circle"></font-awesome-icon>
+        </span>
+        <span v-if="tableData.status === 'unknown'" style="color: #ccc">
+          <font-awesome-icon icon="circle"></font-awesome-icon>
+        </span>
+      </p>
+      <p>
+        Software version :
+        <span> {{ tableData.version }} </span>
+      </p>
       <p>
         Private WAN router ID :
         <span> {{ tableData.id }} </span>
