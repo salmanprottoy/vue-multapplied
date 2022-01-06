@@ -98,7 +98,9 @@
             <el-tooltip class="item" effect="light" placement="top-start">
               <div slot="content">
                 Last updated:
-                {{ scope.row.is_primary_router_updated }}
+                {{
+                  new Date(scope.row.is_primary_router_updated).toDateString()
+                }}
               </div>
               <span
                 v-if="

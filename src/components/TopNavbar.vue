@@ -5,7 +5,7 @@
         <el-col :xs="6" :sm="10" :md="10" :lg="12" :xl="12">
           <div class="grid-content">
             <el-row :gutter="10">
-              <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="3">
+              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
                 <div class="grid-content">
                   <i
                     class="el-icon-s-fold hamburger" 
@@ -14,8 +14,8 @@
                   ></i>
                 </div>
               </el-col>
-              <el-col :xs="0" :sm="21" :md="21" :lg="21" :xl="21">
-                <div class="grid-content" style="margin-left:5px;" >
+              <el-col :xs="0" :sm="22" :md="22" :lg="22" :xl="22">
+                <div class="grid-content" style="margin-left:10px;" >
                   <el-breadcrumb separator="/" >
                   <el-breadcrumb-item :to="{ path: '/home' }"> Enterprise Portal </el-breadcrumb-item>
                   <el-breadcrumb-item :to="{ path: '/' }"> Private WAN Routers </el-breadcrumb-item>
