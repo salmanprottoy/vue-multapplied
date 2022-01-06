@@ -23,5 +23,8 @@ export default {
     Sidebar,
     TopNavbar,
   },
+  props: {
+    isCollapse: Boolean,
+  },
 };
 </script>

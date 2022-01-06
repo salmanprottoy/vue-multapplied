@@ -32,7 +32,7 @@
               <el-col :xs="0" :sm="8" :md="12" :lg="14" :xl="16">
                 Space:
                 <el-cascader
-                  placeholder="ParentDiv"
+                  placeholder="parentdev"
                   :options="options"
                   clearable
                 >
@@ -110,12 +110,12 @@
         </router-link>
       </el-menu-item>
       <el-submenu index="3">
-          <template1 slot="title">
+          <div slot="title">
                 <font-awesome-icon icon="server" style="margin-right: 8px"></font-awesome-icon>
                 <span slot="title">
                     Hosts
                 </span>
-            </template1>
+            </div>
         <el-menu-item-group >
             <el-menu-item index="3-1"> Aggregators </el-menu-item>
             <el-menu-item index="3-2"> 
@@ -170,15 +170,15 @@ export default {
       options: [
         {
           value: "guide",
-          label: "ParentDev",
+          label: "parentdev",
         },
         {
-          value: "component",
-          label: "Component",
+          value: "badev",
+          label: "BA-DEV",
         },
         {
-          value: "resource",
-          label: "Resource",
+          value: "batest",
+          label: "BA-TEST",
         },
       ],
     };

@@ -5,13 +5,25 @@
         <span style="font-size: 20px">All private wan routers</span>
       </div>
       <div>
-        <el-input
-          prefix-icon="el-icon-search"
-          color="#333333"
-          v-model="input"
-          debounce="500"
-        >
-        </el-input>
+        <div style="display: flex; justify-content: space-between">
+          <div>
+            <el-input
+              prefix-icon="el-icon-search"
+              color="#333333"
+              v-model="input"
+              debounce="500"
+            >
+            </el-input>
+          </div>
+          <div>
+            <el-cascader
+              style="color: black"
+              placeholder="Table Options"
+              :options="options"
+            >
+            </el-cascader>
+          </div>
+        </div>
       </div>
     </div>
     <div style="padding: 10px; margin: 10px">
@@ -19,10 +31,10 @@
         :header-cell-style="{ color: '#333333' }"
         :data="tableData.results"
         @sort-change="handleSortChange"
-        style="width: 100%"
+        style="width: auto"
         v-loading="loading"
       >
-        <el-table-column prop="id" label="ID" sortable="custom" width="120">
+        <el-table-column prop="id" label="ID" sortable="custom" width="auto">
           <div slot-scope="scope">
             <span>
               <router-link
@@ -34,7 +46,13 @@
             </span>
           </div>
         </el-table-column>
-        <el-table-column prop="name" label="Name" sortable width="200">
+        <el-table-column
+          prop="name"
+          label="Name"
+          sortable
+          min-width="100"
+          width="auto"
+        >
           <div slot-scope="scope">
             <span>
               <router-link
@@ -62,7 +80,8 @@
           prop="routing_group.display_name"
           label="Routing group"
           sortable
-          width="280"
+          min-width="160"
+          width="auto"
         >
           <div slot-scope="scope">
             <span>
@@ -82,9 +101,20 @@
             </span>
           </div>
         </el-table-column>
-        <el-table-column prop="ip" label="IP" sortable="custom" width="150">
+        <el-table-column
+          prop="ip"
+          label="IP"
+          sortable="custom"
+          min-width="100"
+          width="auto"
+        >
         </el-table-column>
-        <el-table-column prop="ipv6" label="IPv6" sortable="custom" width="200">
+        <el-table-column
+          prop="ipv6"
+          label="IPv6"
+          sortable="custom"
+          width="auto"
+        >
           <div slot-scope="scope">
             <span v-if="scope.row.ipv6 === null">
               <i class="el-icon-minus"></i>
@@ -98,7 +128,8 @@
           prop="version"
           label="Version"
           sortable="custom"
-          width="150"
+          min-width="120"
+          width="auto"
         >
           <div slot-scope="scope">
             <span v-if="scope.row.version === ''"> Never online </span>
@@ -107,9 +138,12 @@
             </span>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="Status" width="100">
+        <el-table-column prop="status" label="Status" width="auto">
           <div slot-scope="scope">
             <span v-if="scope.row.status === 'up'" style="color: #67c23a">
+              <font-awesome-icon icon="circle"></font-awesome-icon>
+            </span>
+            <span v-if="scope.row.status === 'down'" style="color: #ff4949">
               <font-awesome-icon icon="circle"></font-awesome-icon>
             </span>
             <div v-if="scope.row.status === 'unknown'" style="color: #ccc">
@@ -117,7 +151,7 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column label="Actions" width="150">
+        <el-table-column label="Actions" width="auto">
           <div>
             <el-button plain icon="el-icon-edit" size="small"></el-button>
           </div>
@@ -143,6 +177,24 @@ export default {
       loading: true,
       input: "",
       page: 1,
+      options: [
+        {
+          value: "10records",
+          label: "Show 10 records",
+        },
+        {
+          value: "25records",
+          label: "Show 25 records",
+        },
+        {
+          value: "50records",
+          label: "Show 50 records",
+        },
+        {
+          value: "100records",
+          label: "Show 100 records",
+        },
+      ],
     };
   },
   created() {
@@ -275,5 +327,8 @@ export default {
 
 .el-table__row:nth-child(2n-1) {
   background: #f0f7ff;
+}
+::placeholder {
+  color: black !important;
 }
 </style>
