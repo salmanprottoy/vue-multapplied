@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Details from "../views/Details.vue";
 import Home from "../views/Home.vue";
+import Admin from "../views/Admin.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/:id",
     name: "Details",
     component: Details,
+  },
+  {
+    path: "/adminstration/system-chart",
+    name: "Admin",
+    component: Admin,
   },
 ];
 

@@ -66,6 +66,9 @@
                         <i class="el-icon-user" style="font-size: 25px"></i>
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item>View Profile</el-dropdown-item>
+                          <el-dropdown-item>
+                            <router-link to="/adminstration/system-chart" style="text-decoration: none; color: inherit">View System Chart</router-link>
+                            </el-dropdown-item>
                           <el-dropdown-item>Logout</el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
