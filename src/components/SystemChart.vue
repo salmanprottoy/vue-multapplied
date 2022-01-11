@@ -47,7 +47,7 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "1 m",
+              label: " 1 m",
               data: [],
               fill: false,
               tension: 0.5,
@@ -55,20 +55,20 @@ export default {
               borderColor: ["rgba(237, 194, 64, 1)"],
             },
             {
-              label: "5 m",
+              label: " 5 m",
               data: [],
               fill: false,
               tension: 0.5,
               backgroundColor: ["rgba(148, 64, 237, 0.2)"],
-              borderColor: ["rgb(148, 64, 237, 1)"],
+              borderColor: ["rgba(148, 64, 237, 1)"],
             },
             {
-              label: "15 m",
+              label: " 15 m",
               data: [],
               fill: false,
               tension: 0.5,
-              backgroundColor: ["rgb(175, 216, 248, 0.2)"],
-              borderColor: ["rgb(175, 216, 248, 1)"],
+              backgroundColor: ["rgba(175, 216, 248, 0.2)"],
+              borderColor: ["rgba(175, 216, 248, 1)"],
             },
           ],
         },
@@ -84,6 +84,16 @@ export default {
               beginAtZero: true,
             },
           },
+          plugins: {
+            title: {
+              display: true,
+              text: "Load average",
+              font: {
+                size: 16,
+                weight: "bold",
+              },
+            },
+          },
         },
       },
     };
@@ -92,6 +102,7 @@ export default {
     const ctx = document.getElementById("system-chart");
     new Chart(ctx, this.chartData);
   },
+  updated() {},
   created() {
     var currentTime = new Date().getTime();
     currentTime = currentTime / 1000;
