@@ -1,30 +1,41 @@
 <template lang="">
-  <div style="margin: 5px; padding: 5px">
+  <div style="margin: 10px; padding: 10px">
     <el-row>
       <el-col :span="24">
-        <el-card class="box-card">
-          <span style="color: black">Timeframe </span>
+        <el-card lass="box-card" style="border: 1px solid #dcdfe6">
+          <div
+            style="
+              border: 1px solid #dcdfe6;
+              max-width: 500px;
+              border-radius: 2px;
+              padding: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: space-evenly;
+            "
+          >
+            <span style="color: black; margin-right: 5px">Timeframe</span>
 
-          <el-button size="small" @click="getData('1Y')" plain>1Y</el-button>
+            <el-button size="small" @click="getData('1Y')" plain>1Y</el-button>
 
-          <el-button size="small" @click="getData('1M')" plain>1M</el-button>
+            <el-button size="small" @click="getData('1M')" plain>1M</el-button>
 
-          <el-button size="small" @click="getData('1W')" plain>1W</el-button>
+            <el-button size="small" @click="getData('1W')" plain>1W</el-button>
 
-          <el-button size="small" @click="getData('1D')" plain>1D</el-button>
+            <el-button size="small" @click="getData('1D')" plain>1D</el-button>
 
-          <el-button size="small" @click="getData('6H')" plain>6H</el-button>
+            <el-button size="small" @click="getData('6H')" plain>6H</el-button>
 
-          <el-button size="small" @click="getData('1H')" plain>1H</el-button>
+            <el-button size="small" @click="getData('1H')" plain>1H</el-button>
 
-          <el-button size="small" @click="getData('15M')" plain>15M</el-button>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="24">
-        <el-card lass="box-card" v-loading="loading">
-          <canvas id="system-chart"></canvas>
+            <el-button size="small" @click="getData('15M')" plain
+              >15M</el-button
+            >
+          </div>
+          <br />
+          <div v-loading="loading">
+            <canvas id="system-chart" width="350" height="120"></canvas>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -50,6 +61,7 @@ export default {
             {
               label: " 1 m",
               data: [],
+              spanGaps: true,
               fill: false,
               tension: 0.5,
               backgroundColor: ["rgba(237, 194, 64, 0.2)"],
@@ -58,6 +70,7 @@ export default {
             {
               label: " 5 m",
               data: [],
+              spanGaps: true,
               fill: false,
               tension: 0.5,
               backgroundColor: ["rgba(148, 64, 237, 0.2)"],
@@ -66,6 +79,7 @@ export default {
             {
               label: " 15 m",
               data: [],
+              spanGaps: true,
               fill: false,
               tension: 0.5,
               backgroundColor: ["rgba(175, 216, 248, 0.2)"],
@@ -79,12 +93,16 @@ export default {
             mode: "index",
             intersect: false,
           },
+          stacked: false,
           scales: {
             y: {
               beginAtZero: true,
             },
           },
           plugins: {
+            legend: {
+              position: "top",
+            },
             title: {
               display: true,
               text: "Load average",
@@ -98,8 +116,6 @@ export default {
       },
     };
   },
-  mounted() {},
-  updated() {},
   created() {
     var currentTime = new Date().getTime();
     currentTime = currentTime / 1000;
@@ -168,7 +184,7 @@ export default {
           }
         }
         this.loading = false;
-        const ctx = document.getElementById("system-chart");
+        const ctx = document.getElementById("system-chart").getContext("2d");
         this.chart = new Chart(ctx, this.chartData);
         //console.log(this.chartData.data.datasets[1].data);
       })
@@ -253,7 +269,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
 
             //new Chart(ctx, this.chartData);
@@ -332,7 +350,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
@@ -348,7 +368,7 @@ export default {
         this.chartData.data.datasets[1].data = [];
         this.chartData.data.datasets[2].data = [];
 
-        url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3B`;
+        url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3B`;
 
         axios
           .get(url, {
@@ -408,7 +428,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
@@ -486,7 +508,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
@@ -561,7 +585,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
@@ -636,7 +662,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
@@ -711,7 +739,9 @@ export default {
             if (this.chart) {
               this.chart.destroy();
             }
-            const ctx = document.getElementById("system-chart");
+            const ctx = document
+              .getElementById("system-chart")
+              .getContext("2d");
             this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
