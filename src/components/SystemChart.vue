@@ -41,6 +41,7 @@ export default {
       shortTerm: [],
       midTerm: [],
       lognTerm: [],
+      chart: null,
       chartData: {
         type: "line",
         data: {
@@ -78,7 +79,6 @@ export default {
             mode: "index",
             intersect: false,
           },
-          stacked: false,
           scales: {
             y: {
               beginAtZero: true,
@@ -98,10 +98,7 @@ export default {
       },
     };
   },
-  mounted() {
-    const ctx = document.getElementById("system-chart");
-    new Chart(ctx, this.chartData);
-  },
+  mounted() {},
   updated() {},
   created() {
     var currentTime = new Date().getTime();
@@ -171,6 +168,8 @@ export default {
           }
         }
         this.loading = false;
+        const ctx = document.getElementById("system-chart");
+        this.chart = new Chart(ctx, this.chartData);
         //console.log(this.chartData.data.datasets[1].data);
       })
       .catch((error) => {
@@ -251,6 +250,14 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
+
+            //new Chart(ctx, this.chartData);
+            //chart.destroy();
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
@@ -322,6 +329,11 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
@@ -393,6 +405,11 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
@@ -466,6 +483,11 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
@@ -536,6 +558,11 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
@@ -606,6 +633,11 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
@@ -676,6 +708,11 @@ export default {
               }
             }
             this.loading = false;
+            if (this.chart) {
+              this.chart.destroy();
+            }
+            const ctx = document.getElementById("system-chart");
+            this.chart = new Chart(ctx, this.chartData);
             //console.log(this.chartData.data.datasets[1].data);
           })
           .catch((error) => {
