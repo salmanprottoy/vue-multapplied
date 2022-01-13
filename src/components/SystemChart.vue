@@ -58,7 +58,7 @@
                   style="margin-right: 5px"
                 >
                 </el-switch>
-                <span>1m</span>
+                <small>1m</small>
               </div>
               <div style="margin: 10px">
                 <el-switch
@@ -68,7 +68,7 @@
                   style="margin-right: 5px"
                 >
                 </el-switch>
-                <span>5m</span>
+                <small>5m</small>
               </div>
               <div style="margin: 10px">
                 <el-switch
@@ -78,7 +78,7 @@
                   style="margin-right: 5px"
                 >
                 </el-switch>
-                <span>15m</span>
+                <small>15m</small>
               </div>
             </div>
             <canvas id="system-chart" width="350" height="120"></canvas>
@@ -220,14 +220,14 @@ export default {
         selectedTime = new Date().getTime() - 3600 * 6 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
-        this.chartData.options.scales.x.ticks.maxTicksLimit = 30;
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 12;
         url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3B`;
         this.getApiData(val, url);
       } else if (val === "1H") {
         selectedTime = new Date().getTime() - 3600 * 1 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
-        this.chartData.options.scales.x.ticks.maxTicksLimit = 60;
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 15;
         url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
         this.getApiData(val, url);
       } else if (val === "15M") {
