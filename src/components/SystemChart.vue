@@ -34,6 +34,53 @@
           </div>
           <br />
           <div v-loading="loading">
+            <h5
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+              "
+            >
+              Load average
+            </h5>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div style="margin: 10px">
+                <el-switch
+                  @change="toogleChartData"
+                  active-color="rgba(237, 194, 64, 1)"
+                  v-model="m1"
+                  style="margin-right: 5px"
+                >
+                </el-switch>
+                <span>1m</span>
+              </div>
+              <div style="margin: 10px">
+                <el-switch
+                  @change="toogleChartData"
+                  active-color="rgba(148, 64, 237, 1)"
+                  v-model="m2"
+                  style="margin-right: 5px"
+                >
+                </el-switch>
+                <span>5m</span>
+              </div>
+              <div style="margin: 10px">
+                <el-switch
+                  @change="toogleChartData"
+                  active-color="rgba(175, 216, 248, 1)"
+                  v-model="m3"
+                  style="margin-right: 5px"
+                >
+                </el-switch>
+                <span>15m</span>
+              </div>
+            </div>
             <canvas id="system-chart" width="350" height="120"></canvas>
           </div>
         </el-card>
@@ -52,6 +99,9 @@ export default {
       shortTerm: [],
       midTerm: [],
       lognTerm: [],
+      m1: true,
+      m2: true,
+      m3: true,
       chart: null,
       chartData: {
         type: "line",
@@ -93,8 +143,13 @@ export default {
             mode: "index",
             intersect: false,
           },
-          stacked: false,
           scales: {
+            x: {
+              ticks: {
+                maxTicksLimit: 24,
+              },
+            },
+
             y: {
               beginAtZero: true,
             },
@@ -102,14 +157,7 @@ export default {
           plugins: {
             legend: {
               position: "top",
-            },
-            title: {
-              display: true,
-              text: "Load average",
-              font: {
-                size: 16,
-                weight: "bold",
-              },
+              display: false,
             },
           },
         },
@@ -127,6 +175,11 @@ export default {
     this.loading = true;
     this.getApiData("1D", url);
   },
+  updated() {
+    this.$nextTick(function () {
+      this.chart.update();
+    });
+  },
   methods: {
     getData(val) {
       var currentTime;
@@ -139,49 +192,50 @@ export default {
         selectedTime = new Date().getTime() - 3600 * 24 * 365 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 12;
         url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(87600s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(87600s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(87600s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
         this.getApiData(val, url);
       } else if (val === "1M") {
         selectedTime = new Date().getTime() - 3600 * 24 * 30 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 30;
         url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
         this.getApiData(val, url);
       } else if (val === "1W") {
         selectedTime = new Date().getTime() - 3600 * 24 * 7 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 7;
         url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
         this.getApiData(val, url);
       } else if (val === "1D") {
         selectedTime = new Date().getTime() - 3600 * 24 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 24;
         url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
         this.getApiData(val, url);
       } else if (val === "6H") {
         selectedTime = new Date().getTime() - 3600 * 6 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 30;
         url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
         this.getApiData(val, url);
       } else if (val === "1H") {
         selectedTime = new Date().getTime() - 3600 * 1 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 60;
         url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
         this.getApiData(val, url);
       } else if (val === "15M") {
         selectedTime = new Date().getTime() - 60 * 15 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
+        this.chartData.options.scales.x.ticks.maxTicksLimit = 15;
         url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
         this.getApiData(val, url);
       }
     },
@@ -258,7 +312,6 @@ export default {
                 })
               );
             }
-
             if (this.shortTerm[i][1] !== null) {
               this.chartData.data.datasets[0].data.push(
                 this.shortTerm[i][1].toFixed(1)
@@ -285,16 +338,35 @@ export default {
               this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
             }
           }
-          this.loading = false;
           if (this.chart) {
             this.chart.destroy();
           }
           const ctx = document.getElementById("system-chart").getContext("2d");
+          this.loading = false;
           this.chart = new Chart(ctx, this.chartData);
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    toogleChartData() {
+      if (this.m1 === false) {
+        this.chartData.data.datasets[0].hidden = true;
+      } else {
+        this.chartData.data.datasets[0].hidden = false;
+      }
+
+      if (this.m2 === false) {
+        this.chartData.data.datasets[1].hidden = true;
+      } else {
+        this.chartData.data.datasets[1].hidden = false;
+      }
+
+      if (this.m3 === false) {
+        this.chartData.data.datasets[2].hidden = true;
+      } else {
+        this.chartData.data.datasets[2].hidden = false;
+      }
     },
   },
 };
