@@ -124,73 +124,8 @@ export default {
     selectedTime = selectedTime / 1000;
     selectedTime = parseInt(selectedTime);
     var url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
     this.loading = true;
-
-    axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        this.shortTerm = response.data.results[0].series[0].values;
-        //console.log(this.shortTerm.length);
-        this.midTerm = response.data.results[1].series[0].values;
-        //console.log(this.midTerm.length);
-        this.longTerm = response.data.results[2].series[0].values;
-        //console.log(this.longTerm.length);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-        for (var i = 0; i < this.shortTerm.length; i++) {
-          //console.log(this.shortTerm[i][1]);
-          var time = this.shortTerm[i][0];
-          time = new Date(time);
-          this.chartData.data.labels.push(
-            time.toLocaleString("en-US", {
-              day: "numeric",
-              month: "numeric",
-              year: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-            })
-          );
-          if (this.shortTerm[i][1] !== null) {
-            this.chartData.data.datasets[0].data.push(
-              this.shortTerm[i][1].toFixed(1)
-            );
-          } else {
-            this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-          }
-        }
-        for (var j = 0; j < this.midTerm.length; j++) {
-          if (this.midTerm[j][1] !== null) {
-            this.chartData.data.datasets[1].data.push(
-              this.midTerm[j][1].toFixed(1)
-            );
-          } else {
-            this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-          }
-        }
-        for (var k = 0; k < this.longTerm.length; k++) {
-          if (this.longTerm[k][1] !== null) {
-            this.chartData.data.datasets[2].data.push(
-              this.longTerm[k][1].toFixed(1)
-            );
-          } else {
-            this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-          }
-        }
-        this.loading = false;
-        const ctx = document.getElementById("system-chart").getContext("2d");
-        this.chart = new Chart(ctx, this.chartData);
-        //console.log(this.chartData.data.datasets[1].data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.getApiData("1D", url);
   },
   methods: {
     getData(val) {
@@ -200,275 +135,98 @@ export default {
       var selectedTime;
       var url;
       this.loading = true;
-
       if (val === "1Y") {
         selectedTime = new Date().getTime() - 3600 * 24 * 365 * 1000;
         selectedTime = selectedTime / 1000;
         selectedTime = parseInt(selectedTime);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-
         url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(87600s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(87600s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(87600s)+fill(null)+ORDER+BY+time+ASC%3B`;
 
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
+        this.getApiData(val, url);
+      } else if (val === "1M") {
+        selectedTime = new Date().getTime() - 3600 * 24 * 30 * 1000;
+        selectedTime = selectedTime / 1000;
+        selectedTime = parseInt(selectedTime);
+        url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3B`;
 
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+        this.getApiData(val, url);
+      } else if (val === "1W") {
+        selectedTime = new Date().getTime() - 3600 * 24 * 7 * 1000;
+        selectedTime = selectedTime / 1000;
+        selectedTime = parseInt(selectedTime);
+        url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3B`;
+
+        this.getApiData(val, url);
+      } else if (val === "1D") {
+        selectedTime = new Date().getTime() - 3600 * 24 * 1000;
+        selectedTime = selectedTime / 1000;
+        selectedTime = parseInt(selectedTime);
+        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3B`;
+
+        this.getApiData(val, url);
+      } else if (val === "6H") {
+        selectedTime = new Date().getTime() - 3600 * 6 * 1000;
+        selectedTime = selectedTime / 1000;
+        selectedTime = parseInt(selectedTime);
+        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3B`;
+
+        this.getApiData(val, url);
+      } else if (val === "1H") {
+        selectedTime = new Date().getTime() - 3600 * 1 * 1000;
+        selectedTime = selectedTime / 1000;
+        selectedTime = parseInt(selectedTime);
+        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
+        this.getApiData(val, url);
+      } else if (val === "15M") {
+        selectedTime = new Date().getTime() - 60 * 15 * 1000;
+        selectedTime = selectedTime / 1000;
+        selectedTime = parseInt(selectedTime);
+        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
+
+        this.getApiData(val, url);
+      }
+    },
+    getApiData(val, url) {
+      this.chartData.data.labels = [];
+      this.chartData.data.datasets[0].data = [];
+      this.chartData.data.datasets[1].data = [];
+      this.chartData.data.datasets[2].data = [];
+      axios
+        .get(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          if (response.data.results[0].series)
+            this.shortTerm = response.data.results[0].series[0].values;
+          if (response.data.results[1].series)
+            this.midTerm = response.data.results[1].series[0].values;
+          if (response.data.results[2].series)
+            this.longTerm = response.data.results[2].series[0].values;
+          for (var i = 0; i < this.shortTerm.length; i++) {
+            var time = this.shortTerm[i][0];
+            time = new Date(time);
+            if (val === "1Y") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   year: "numeric",
                   month: "short",
                 })
               );
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
-            }
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
-            }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
-            }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
-            }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-
-            //new Chart(ctx, this.chartData);
-            //chart.destroy();
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (val === "1M") {
-        selectedTime = new Date().getTime() - 3600 * 24 * 30 * 1000;
-        selectedTime = selectedTime / 1000;
-        selectedTime = parseInt(selectedTime);
-
-        url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221h%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(7200s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
-            this.chartData.data.labels = [];
-            this.chartData.data.datasets[0].data = [];
-            this.chartData.data.datasets[1].data = [];
-            this.chartData.data.datasets[2].data = [];
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+            } else if (val === "1M") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   day: "numeric",
                   month: "short",
                 })
               );
-
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
-            }
-
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
-            }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
-            }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
-            }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (val === "1W") {
-        selectedTime = new Date().getTime() - 3600 * 24 * 7 * 1000;
-        selectedTime = selectedTime / 1000;
-        selectedTime = parseInt(selectedTime);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-
-        url = `https://multapplied-staging.w3engineers.com/dev-api/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%221m%22.%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(1680s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
-
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+            } else if (val === "1W") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   weekday: "short",
                 })
               );
-
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
-            }
-
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
-            }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
-            }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
-            }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (val === "1D") {
-        selectedTime = new Date().getTime() - 3600 * 24 * 1000;
-        selectedTime = selectedTime / 1000;
-        selectedTime = parseInt(selectedTime);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-
-        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(240s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
-
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+            } else if (val === "1D") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   day: "numeric",
@@ -478,277 +236,65 @@ export default {
                   minute: "numeric",
                 })
               );
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
-            }
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
-            }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
-            }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
-            }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (val === "6H") {
-        selectedTime = new Date().getTime() - 3600 * 6 * 1000;
-        selectedTime = selectedTime / 1000;
-        selectedTime = parseInt(selectedTime);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-
-        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(60s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
-
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+            } else if (val === "6H") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
                 })
               );
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
-            }
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
-            }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
-            }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
-            }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (val === "1H") {
-        selectedTime = new Date().getTime() - 3600 * 1 * 1000;
-        selectedTime = selectedTime / 1000;
-        selectedTime = parseInt(selectedTime);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-
-        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
-
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+            } else if (val === "1H") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
                 })
               );
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
-            }
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
-            }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
-            }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
-            }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (val === "15M") {
-        selectedTime = new Date().getTime() - 60 * 15 * 1000;
-        selectedTime = selectedTime / 1000;
-        selectedTime = parseInt(selectedTime);
-        this.chartData.data.labels = [];
-        this.chartData.data.datasets[0].data = [];
-        this.chartData.data.datasets[1].data = [];
-        this.chartData.data.datasets[2].data = [];
-
-        url = `https://ba-dev.turnium.com/metrics_api/query?db=bondingadmin&u=graph&p=5heP5GBAI5IP2rfHapKQVeHdlIJC7iryOApI2mubkAmv16zc112wLdd2&epoch=ms&q=SELECT+mean(%22shortterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22midterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3BSELECT+mean(%22longterm%22)+FROM+%22load%22+WHERE++time+%3C+${currentTime}s+AND+time+%3E+${selectedTime}s+GROUP+BY+time(10s)+fill(null)+ORDER+BY+time+ASC%3B`;
-
-        axios
-          .get(url, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.data.results[0].series)
-              this.shortTerm = response.data.results[0].series[0].values;
-            //console.log(this.shortTerm.length);
-            if (response.data.results[1].series)
-              this.midTerm = response.data.results[1].series[0].values;
-            //console.log(this.midTerm.length);
-            if (response.data.results[2].series)
-              this.longTerm = response.data.results[2].series[0].values;
-            //console.log(this.longTerm.length);
-
-            for (var i = 0; i < this.shortTerm.length; i++) {
-              //console.log(this.shortTerm[i][1]);
-              var time = this.shortTerm[i][0];
-              time = new Date(time);
+            } else if (val === "15M") {
               this.chartData.data.labels.push(
                 time.toLocaleString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
                 })
               );
-              if (this.shortTerm[i][1] !== null) {
-                this.chartData.data.datasets[0].data.push(
-                  this.shortTerm[i][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
-              }
             }
-            for (var j = 0; j < this.midTerm.length; j++) {
-              if (this.midTerm[j][1] !== null) {
-                this.chartData.data.datasets[1].data.push(
-                  this.midTerm[j][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
-              }
+
+            if (this.shortTerm[i][1] !== null) {
+              this.chartData.data.datasets[0].data.push(
+                this.shortTerm[i][1].toFixed(1)
+              );
+            } else {
+              this.chartData.data.datasets[0].data.push(this.shortTerm[i][1]);
             }
-            for (var k = 0; k < this.longTerm.length; k++) {
-              if (this.longTerm[k][1] !== null) {
-                this.chartData.data.datasets[2].data.push(
-                  this.longTerm[k][1].toFixed(1)
-                );
-              } else {
-                this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
-              }
+          }
+          for (var j = 0; j < this.midTerm.length; j++) {
+            if (this.midTerm[j][1] !== null) {
+              this.chartData.data.datasets[1].data.push(
+                this.midTerm[j][1].toFixed(1)
+              );
+            } else {
+              this.chartData.data.datasets[1].data.push(this.midTerm[j][1]);
             }
-            this.loading = false;
-            if (this.chart) {
-              this.chart.destroy();
+          }
+          for (var k = 0; k < this.longTerm.length; k++) {
+            if (this.longTerm[k][1] !== null) {
+              this.chartData.data.datasets[2].data.push(
+                this.longTerm[k][1].toFixed(1)
+              );
+            } else {
+              this.chartData.data.datasets[2].data.push(this.longTerm[k][1]);
             }
-            const ctx = document
-              .getElementById("system-chart")
-              .getContext("2d");
-            this.chart = new Chart(ctx, this.chartData);
-            //console.log(this.chartData.data.datasets[1].data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+          }
+          this.loading = false;
+          if (this.chart) {
+            this.chart.destroy();
+          }
+          const ctx = document.getElementById("system-chart").getContext("2d");
+          this.chart = new Chart(ctx, this.chartData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
