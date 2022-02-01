@@ -347,7 +347,7 @@ export default {
           this.chart = new Chart(ctx, this.chartData);
         })
         .catch((error) => {
-          console.log(error);
+          
         });
     },
     toogleChartData() {

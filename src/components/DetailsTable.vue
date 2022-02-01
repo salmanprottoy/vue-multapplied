@@ -110,7 +110,7 @@ export default {
       })
       .catch((error) => {
         if (error.response.status == "404") {
-          console.log("data not found");
+          
         }
       });
   },

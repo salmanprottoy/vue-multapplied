@@ -245,7 +245,7 @@ export default {
         this.loading = false;
       })
       .catch((error) => {
-        console.log(error);
+        
       });
   },
   watch: {
@@ -265,7 +265,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          console.log(error);
+          
         });
     },
   },
@@ -286,7 +286,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          console.log(error);
+          
         });
     },
     searchData() {
@@ -305,7 +305,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          console.log(error);
+          
         });
     },
     handleSortChange(prop) {
@@ -325,7 +325,7 @@ export default {
             this.loading = false;
           })
           .catch((error) => {
-            console.log(error);
+            
           });
       } else {
         const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}&ordering=-${prop.prop}`;
@@ -342,7 +342,7 @@ export default {
             this.loading = false;
           })
           .catch((error) => {
-            console.log(error);
+            
           });
       }
     },
