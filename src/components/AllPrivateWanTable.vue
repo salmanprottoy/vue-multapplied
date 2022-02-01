@@ -244,9 +244,7 @@ export default {
         this.tableData = response.data;
         this.loading = false;
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   },
   watch: {
     input: function (value) {
@@ -264,9 +262,7 @@ export default {
           this.tableData = response.data;
           this.loading = false;
         })
-        .catch((error) => {
-          
-        });
+        .catch((error) => {});
     },
   },
   methods: {
@@ -285,9 +281,7 @@ export default {
           this.tableData = response.data;
           this.loading = false;
         })
-        .catch((error) => {
-          
-        });
+        .catch((error) => {});
     },
     searchData() {
       this.loading = true;
@@ -304,9 +298,7 @@ export default {
           this.tableData = response.data;
           this.loading = false;
         })
-        .catch((error) => {
-          
-        });
+        .catch((error) => {});
     },
     handleSortChange(prop) {
       this.loading = true;
@@ -324,9 +316,7 @@ export default {
             this.tableData = response.data;
             this.loading = false;
           })
-          .catch((error) => {
-            
-          });
+          .catch((error) => {});
       } else {
         const url = `/api/v4/private_wan_routers/?page_size=10&search=${this.input}&ordering=-${prop.prop}`;
         const token = "ZWtyYW1AdzNlbmdpbmVlcnMuY29tOm11bHRpQDNtMG4=";
@@ -341,9 +331,7 @@ export default {
             this.tableData = response.data;
             this.loading = false;
           })
-          .catch((error) => {
-            
-          });
+          .catch((error) => {});
       }
     },
   },

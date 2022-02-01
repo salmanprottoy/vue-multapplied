@@ -346,9 +346,7 @@ export default {
           this.loading = false;
           this.chart = new Chart(ctx, this.chartData);
         })
-        .catch((error) => {
-          
-        });
+        .catch((error) => {});
     },
     toogleChartData() {
       if (this.m1 === false) {
